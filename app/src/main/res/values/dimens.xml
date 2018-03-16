@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="dialog_loading_circular_progress_size">60dp</dimen>
+
+    <dimen name="default_spacing_small">2dp</dimen>
+</resources>

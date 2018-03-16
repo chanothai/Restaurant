@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">BaseApplication</string>
+    <string name="loading_en">Loading</string>
+    <string name="phone_number_en">Phone Number</string>
+    <string name="btn_sign_in_en">SIGN IN</string>
+    <string name="citizenid_en">CitizenID</string>
+    <string name="btn_reload_en">RELOAD</string>
+
+    <string name="title_model">Ingredient</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>

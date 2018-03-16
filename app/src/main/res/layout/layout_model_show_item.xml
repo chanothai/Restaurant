@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="250dp">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="4dp"
+        android:background="@android:color/white">
+
+        <ImageView
+            android:id="@+id/item_img"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="0.4"
+            android:scaleType="fitCenter"
+            android:cropToPadding="true"
+            android:src="@drawable/food2" />
+
+        <com.company.zicure.baseapplication.customview.LabelView
+            android:id="@+id/item_name"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="@string/app_name"
+            android:textColor="@android:color/black"
+            android:textSize="36sp"
+            android:padding="8dp"
+            android:layout_weight="1"
+            android:gravity="bottom|center"/>
+    </LinearLayout>
+
+</android.support.v7.widget.CardView>
