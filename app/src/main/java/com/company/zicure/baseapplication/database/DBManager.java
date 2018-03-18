@@ -6,7 +6,12 @@ package com.company.zicure.baseapplication.database;
 
 public class DBManager {
     private static DBManager me = null;
-    private String Tablemeal = null, mealName = null, mealDetail = null, mealQRcode = null, mealImageName = null;
+    private String Tablemeal = null;
+    private String mealName = null;
+    private String mealDetail = null;
+    private String mealQRcode = null;
+    private String mealImageName = null;
+    private String mealFoodID = null;
     private String TableIngredient = null, nameIGD = null, imageNameIGD = null;
 
     private String DB_NAME = "makro.db";
@@ -31,6 +36,7 @@ public class DBManager {
         mealDetail = "description";
         mealQRcode = "qrcode";
         mealImageName = "image_name";
+        mealFoodID = "food_id";
     }
 
     private void initTableIngredient(){
@@ -79,4 +85,11 @@ public class DBManager {
         return imageNameIGD;
     }
 
+    public String getMealFoodID() {
+        return mealFoodID;
+    }
+
+    public void setMealFoodID(String mealFoodID) {
+        this.mealFoodID = mealFoodID;
+    }
 }

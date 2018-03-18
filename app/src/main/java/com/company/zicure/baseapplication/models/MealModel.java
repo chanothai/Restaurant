@@ -9,6 +9,7 @@ public class MealModel {
     private String name;
     private String imageName;
     private String qrcode;
+    private String foodID;
     private boolean active;
 
     public String getName() {
@@ -49,5 +50,13 @@ public class MealModel {
 
     public void setQrcode(String qrcode) {
         this.qrcode = qrcode;
+    }
+
+    public String getFoodID() {
+        return foodID;
+    }
+
+    public void setFoodID(String foodID) {
+        this.foodID = foodID;
     }
 }

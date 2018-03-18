@@ -3,4 +3,6 @@
     <dimen name="dialog_loading_circular_progress_size">60dp</dimen>
 
     <dimen name="default_spacing_small">2dp</dimen>
+    <dimen name="padding_large">16dp</dimen>
+    <dimen name="size_text_medium">22sp</dimen>
 </resources>

@@ -6,22 +6,7 @@
     android:layout_height="match_parent"
     >
 
-    <RelativeLayout
-        android:id="@+id/layout_main"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <com.jgabrielfreitas.core.BlurImageView
-            android:id="@+id/bg_image_food"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scaleType="fitXY"
-            android:src="@drawable/bg_japan_food" />
-    </RelativeLayout>
+    <include layout="@layout/layout_background_blur"/>
 
     <RelativeLayout
         android:id="@+id/layout_menu"

@@ -1,6 +1,8 @@
 package com.company.zicure.baseapplication.utility;
 
+import com.company.zicure.baseapplication.models.IngredientModel;
 import com.company.zicure.baseapplication.models.MealModel;
+import com.company.zicure.baseapplication.models.StoreListItem;
 
 import java.util.ArrayList;
 
@@ -12,10 +14,21 @@ public class ModelCart {
     private static ModelCart me = null;
     private ArrayList<MealModel> mealModel = null;
     private ArrayList<MealModel> condimentModel = null;
+    private ArrayList<MealModel> ingredientModel = null;
+    private ArrayList<MealModel> resultMealModel = null;
+
+    private ArrayList<IngredientModel> scanMealModel = null;
+
+    private ArrayList<MealModel> arrListItem = null;
 
     public ModelCart() {
         mealModel = new ArrayList<>();
         condimentModel = new ArrayList<>();
+        ingredientModel = new ArrayList<>();
+        arrListItem = new ArrayList<>();
+        resultMealModel = new ArrayList<>();
+
+        scanMealModel = new ArrayList<>();
     }
 
     public static ModelCart getInstance() {
@@ -39,5 +52,33 @@ public class ModelCart {
 
     public ArrayList<MealModel> getCondimentModel() {
         return condimentModel;
+    }
+
+    public ArrayList<MealModel> getIngredientModel() {
+        return ingredientModel;
+    }
+
+    public void setIngredientModel(ArrayList<MealModel> ingredientModel) {
+        this.ingredientModel = ingredientModel;
+    }
+
+    public ArrayList<MealModel> getArrListItem() {
+        return arrListItem;
+    }
+
+    public ArrayList<MealModel> getResultMealModel() {
+        return resultMealModel;
+    }
+
+    public void setResultMealModel(ArrayList<MealModel> resultMealModel) {
+        this.resultMealModel = resultMealModel;
+    }
+
+    public ArrayList<IngredientModel> getScanMealModel() {
+        return scanMealModel;
+    }
+
+    public void setScanMealModel(ArrayList<IngredientModel> scanMealModel) {
+        this.scanMealModel = scanMealModel;
     }
 }

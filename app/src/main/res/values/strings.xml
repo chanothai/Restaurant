@@ -8,6 +8,11 @@
 
     <string name="title_model">Ingredient</string>
 
+    <string name="title_list_item">เลือกวัตถุดิบ</string>
+    <string name="txt_btn_confirm">ตกลง</string>
+    <string name="txt_btn_next">ถัดไป</string>
+    <string name="txt_btn_cancel">กลับ</string>
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

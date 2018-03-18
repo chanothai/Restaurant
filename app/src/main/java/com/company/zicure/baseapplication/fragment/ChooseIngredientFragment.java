@@ -2,14 +2,21 @@ package com.company.zicure.baseapplication.fragment;
 
 
 import android.content.Context;
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import com.company.zicure.baseapplication.R;
 import com.company.zicure.baseapplication.models.AnimationItem;
 
-public class FragmentShowCondiment extends BaseFragment {
+/**
+ * A simple {@link Fragment} subclass.
+ */
+public class ChooseIngredientFragment extends BaseFragment {
 
     @Override
     protected int getLayoutResId() {
@@ -30,6 +37,6 @@ public class FragmentShowCondiment extends BaseFragment {
 
     @Override
     protected int getTypeLayout() {
-        return 2;
+        return 3;
     }
 }

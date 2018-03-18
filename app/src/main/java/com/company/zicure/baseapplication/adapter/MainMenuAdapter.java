@@ -60,15 +60,22 @@ public class MainMenuAdapter extends RecyclerView.Adapter<MainMenuAdapter.MainMe
             @Override
             public void onClick(View v) {
 
+                Bundle bundle;
                 if (position == 0) {
-                    Bundle bundle = new Bundle();
+                    bundle = new Bundle();
                     bundle.putInt("view_pattern", 0);
-                    ((MainActivity) context).openActivity(ShowItemActivity.class, bundle);
+                    ((MainActivity) context).queryMeal();
                 }else if (position == 1) {
-                    Bundle bundle = new Bundle();
+                    bundle = new Bundle();
                     bundle.putInt("view_pattern", 1);
-                    ((MainActivity) context).openActivity(ShowItemActivity.class, bundle);
+                    ((MainActivity) context).queryCondiment();
+                }else{
+                    bundle = new Bundle();
+                    bundle.putInt("view_pattern", 2);
+                    ((MainActivity) context).queryIngredient();
                 }
+
+                ((MainActivity) context).openActivity(ShowItemActivity.class, bundle);
             }
         });
     }

@@ -51,8 +51,6 @@ public class MainActivity extends BaseActivity {
         if (savedInstanceState == null) {
             mHelper = new DBHelper(this);
             sqlDatabase = mHelper.getWritableDatabase();
-            queryMeal();
-            queryCondiment();
 
             runAnimation(recyclerMenu);
         }
@@ -71,6 +69,26 @@ public class MainActivity extends BaseActivity {
         recyclerMenu.setLayoutAnimation(controller);
         recyclerMenu.getAdapter().notifyDataSetChanged();
         recyclerMenu.scheduleLayoutAnimation();
+    }
+
+    public void queryIngredient() {
+        if (ModelCart.getInstance().getIngredientModel().size() == 0) {
+            mCursor = sqlDatabase.rawQuery("SELECT * FROM " + DBManager.getInstance().getTableIngredient() + " WHERE type = 0", null);
+            mCursor.moveToFirst();
+
+            while (!mCursor.isAfterLast()) {
+                MealModel mealModel = new MealModel();
+                mealModel.setName(mCursor.getString(mCursor.getColumnIndex(DBManager.getInstance().getmealName())));
+                mealModel.setActive(false);
+                mealModel.setFoodID(mCursor.getString(mCursor.getColumnIndex(DBManager.getInstance().getMealFoodID())));
+
+                if (ModelCart.getInstance().getIngredientModel().size() < 24){
+                    ModelCart.getInstance().getIngredientModel().add(mealModel);
+                }
+
+                mCursor.moveToNext();
+            }
+        }
     }
 
     public void queryMeal() {
@@ -99,6 +117,8 @@ public class MainActivity extends BaseActivity {
                 MealModel mealModel = new MealModel();
                 mealModel.setName(mCursor.getString(mCursor.getColumnIndex(DBManager.getInstance().getmealName())));
                 mealModel.setImageName(mCursor.getString(mCursor.getColumnIndex(DBManager.getInstance().getmealImageName())));
+                mealModel.setActive(false);
+                mealModel.setFoodID(mCursor.getString(mCursor.getColumnIndex(DBManager.getInstance().getMealFoodID())));
 
                 if (ModelCart.getInstance().getCondimentModel().size() < 6){
                     ModelCart.getInstance().getCondimentModel().add(mealModel);
@@ -135,6 +155,8 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        queryMeal();
+        queryCondiment();
         runAnimation(recyclerMenu);
     }
 
