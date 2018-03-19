@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="500dp"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:padding="48dp">
+
+        <com.company.zicure.baseapplication.customview.LabelView
+            android:id="@+id/name_item"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="28sp"
+            android:text="@string/title_model"
+            android:padding="4dp"
+            android:textColor="@android:color/black"
+            android:layout_marginStart="4dp"/>
+
+        <ImageView
+            android:id="@+id/img_qrcode"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/name_item"
+            android:scaleType="fitCenter"
+            android:src="@drawable/qr1"
+            android:layout_above="@+id/btn_print"
+            android:layout_marginBottom="24dp"
+            android:layout_marginTop="24dp"
+            />
+
+        <com.company.zicure.baseapplication.customview.ButtonView
+            android:id="@+id/btn_print"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/white"
+            android:padding="16dp"
+            android:textSize="48sp"
+            android:text="Print"
+            android:background="@drawable/selector_item"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"/>
+
+    </RelativeLayout>
+</android.support.constraint.ConstraintLayout>

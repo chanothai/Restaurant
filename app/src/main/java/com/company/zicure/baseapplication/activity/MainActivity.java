@@ -6,8 +6,12 @@ import android.os.Bundle;
 import android.os.PowerManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
+import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import com.company.zicure.baseapplication.R;
 import com.company.zicure.baseapplication.adapter.MainMenuAdapter;
@@ -25,7 +29,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.ArrayList;
 
 public class MainActivity extends BaseActivity {
 
@@ -36,7 +39,8 @@ public class MainActivity extends BaseActivity {
 
     //View
     private BlurImageView imageBg = null;
-    private RecyclerView recyclerMenu = null;
+    private RelativeLayout layoutIngredient = null;
+    private Button btnMealMenu = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,17 +55,34 @@ public class MainActivity extends BaseActivity {
         if (savedInstanceState == null) {
             mHelper = new DBHelper(this);
             sqlDatabase = mHelper.getWritableDatabase();
-
-            runAnimation(recyclerMenu);
         }
     }
 
     private void bindView(){
         imageBg = findViewById(R.id.bg_image_food);
         imageBg.setBlur(3);
-        recyclerMenu = findViewById(R.id.recycler_menu);
-        recyclerMenu.setLayoutManager(new LinearLayoutManager(this));
-        recyclerMenu.setAdapter(new MainMenuAdapter(this));
+        layoutIngredient = findViewById(R.id.layout_title);
+        layoutIngredient.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Bundle bundle = new Bundle();
+                bundle.putInt("view_pattern", 2);
+                queryIngredient();
+                openActivity(ShowItemActivity.class, bundle);
+            }
+        });
+
+        btnMealMenu = findViewById(R.id.btn_meal_menu);
+        btnMealMenu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Bundle bundle = new Bundle();
+                bundle.putInt("view_pattern", 0);
+                queryMeal();
+
+                openActivity(ShowItemActivity.class, bundle);
+            }
+        });
     }
 
     private void runAnimation(RecyclerView recyclerMenu){
@@ -157,7 +178,6 @@ public class MainActivity extends BaseActivity {
         super.onResume();
         queryMeal();
         queryCondiment();
-        runAnimation(recyclerMenu);
     }
 
     @Override

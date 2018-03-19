@@ -8,26 +8,91 @@
 
     <include layout="@layout/layout_background_blur"/>
 
-    <RelativeLayout
-        android:id="@+id/layout_menu"
-        android:layout_width="500dp"
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fitsSystemWindows="true"
-        android:layout_marginBottom="24dp"
-        android:layout_marginTop="24dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/recycler_menu"
+        <RelativeLayout
+            android:id="@+id/layout_banner"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_centerInParent="true"
-            android:background="@color/bg_select_normal"
-            android:paddingBottom="1dp"
-            android:paddingTop="1dp" />
-    </RelativeLayout>
+            android:background="@android:color/white"
+            android:layout_weight="1">
+
+            <ImageView
+                android:id="@+id/logo"
+                android:layout_width="300dp"
+                android:layout_height="200dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/logo"
+                android:layout_centerInParent="true"
+                android:layout_above="@+id/txt_title"/>
+
+            <com.company.zicure.baseapplication.customview.LabelView
+                android:id="@+id/txt_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/black"
+                android:textSize="48sp"
+                android:gravity="center|top"
+                android:padding="8dp"
+                android:textStyle="bold"
+                android:background="@android:color/white"
+                android:layout_alignParentBottom="true"
+                android:text="สร้างความหลากหลายของวัตถุดิบของคุณ"/>
+
+        </RelativeLayout>
+
+
+        <LinearLayout
+            android:id="@+id/layout_menu"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_weight="0.8"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="800dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.4"
+                android:layout_gravity="center"
+                android:paddingTop="4dp"
+                android:paddingBottom="4dp">
+
+                <include layout="@layout/layout_model_menu"/>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+
+                <com.company.zicure.baseapplication.customview.ButtonView
+                    android:id="@+id/btn_meal_menu"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginEnd="24dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginBottom="4dp"
+                    android:layout_centerVertical="true"
+                    android:textColor="@android:color/white"
+                    android:padding="16dp"
+                    android:textSize="28sp"
+                    android:text="ดูเมนูทั้งหมด"
+                    android:background="@drawable/selector_item"/>
+            </RelativeLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>

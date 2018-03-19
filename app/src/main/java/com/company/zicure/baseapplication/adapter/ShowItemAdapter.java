@@ -1,5 +1,6 @@
 package com.company.zicure.baseapplication.adapter;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
@@ -11,6 +12,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
@@ -60,11 +62,12 @@ public class ShowItemAdapter extends RecyclerView.Adapter<ShowItemAdapter.ShowIt
                 @Override
                 public void onClick(View v) {
                     if (ModelCart.getInstance().getMealModel().size() > 0) {
-                        try {
-                            ((ResultMealActivity) context).startPrint();
-                        } catch (StarIOPortException e) {
-                            e.printStackTrace();
-                        }
+                        /***********/
+                        int imgID = context.getResources().getIdentifier(getArrModel().get(position).getQrcode(),
+                                "drawable",
+                                context.getPackageName());
+                        String name = getArrModel().get(position).getName();
+                        createDialogPrint(name, imgID);
                     }
                 }
             });
@@ -99,6 +102,32 @@ public class ShowItemAdapter extends RecyclerView.Adapter<ShowItemAdapter.ShowIt
         }else{
             holder.itemIMG.setVisibility(View.GONE);
         }
+    }
+
+    private void createDialogPrint(String name, int qrcode){
+        final Dialog dialog = new Dialog(context);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.layout_dialog_custom);
+        dialog.setCancelable(false);
+
+        LabelView itemName = dialog.findViewById(R.id.name_item);
+        itemName.setText("ชื่อ: " +name);
+
+        ImageView imgQR = dialog.findViewById(R.id.img_qrcode);
+        imgQR.setImageResource(qrcode);
+
+        ButtonView btnPrint = dialog.findViewById(R.id.btn_print);
+        btnPrint.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (ModelCart.getInstance().getPageView() == 1) {
+                    ((ResultMealActivity)context).startPrint();
+                }
+                dialog.dismiss();
+            }
+        });
+
+        dialog.show();
     }
 
     private void setSelectActive(final ShowItemViewHolder holder, final int position) {

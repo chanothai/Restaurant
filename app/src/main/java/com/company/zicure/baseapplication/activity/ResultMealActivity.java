@@ -1,5 +1,8 @@
 package com.company.zicure.baseapplication.activity;
 
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
@@ -21,7 +24,9 @@ import com.starmicronics.stario.StarIOPortException;
 import com.starmicronics.stario.StarPrinterStatus;
 import com.starmicronics.starioextension.ICommandBuilder;
 import com.starmicronics.starioextension.StarIoExt;
+import com.starmicronics.starioextension.StarIoExt.Emulation;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 
 public class ResultMealActivity extends BaseActivity {
@@ -68,37 +73,130 @@ public class ResultMealActivity extends BaseActivity {
         callResultItem();
     }
 
-    public void connectPrinter(){
+    private void connectPrinter(){
         try{
             portName = ManagerPrint.getFirstPrinter("BT:");
             Log.d("Printer", portName);
 
             port = StarIOPort.getPort(portName, "", 10000, this);
-            StarPrinterStatus status = ManagerPrint.getInstance(this, portName, "").getStatus(port);
-            if (!status.offline) {
-                Log.d(LOG, "Connect was correct");
-                //Print online
-            }else{
-                Log.d(LOG, "Connect was incorrect");
-            }
+
         }catch (StarIOPortException e){
             e.printStackTrace();
         }
     }
 
-    public void startPrint() throws StarIOPortException {
-        if (port != null) {
-            byte[] commands;
+    public void startPrint() {
+//        try{
+            if (port != null) {
+                byte[] commands;
+//                ILocalizeReceipts localizeReceipts = ILocalizeReceipts.createLocalizeReceipts(0, 832);
+//                commands = PrinterFunctions.createCouponData(emulation, localizeReceipts, getResources(), 832, ICommandBuilder.BitmapConverterRotation.Normal);
+//                Communication.sendCommands(this, commands, port, this, mCallback);
+                commands = createData(Emulation.StarGraphic, 832, this);
+                Communication.sendCommands(this, commands, port.getPortName(), port.getPortSettings(), 10000, this, mCallback);
 
-            PrinterSetting setting = new PrinterSetting(this);
-            StarIoExt.Emulation emulation = setting.getEmulation();
+//                StarPrinterStatus statusPrint = port.beginCheckedBlock();
+//
+//                if (statusPrint.offline) {
+//                    throw new StarIOPortException("A printer is offline.");
+//                }
+//                commands = createData(emulation, 832, this);
+//
+//
+//                port.writePort(commands, 0, commands.length);
+//
+//                port.setEndCheckedBlockTimeoutMillis(30000);
+//
+//                statusPrint = port.endCheckedBlock();
+//
+//                if (statusPrint.coverOpen) {
+//                    throw new StarIOPortException("Printer cover is open");
+//                } else if (statusPrint.receiptPaperEmpty) {
+//                    throw new StarIOPortException("Receipt paper is empty");
+//                } else if (statusPrint.offline) {
+//                    throw new StarIOPortException("Printer is offline");
+//                }
+            }
+//        }catch (StarIOPortException e){
+//            e.printStackTrace();
+//        }
+    }
 
-            ILocalizeReceipts localizeReceipts = ILocalizeReceipts.createLocalizeReceipts(0, 832);
-            commands = PrinterFunctions.createCouponData(emulation, localizeReceipts, getResources(), 832, ICommandBuilder.BitmapConverterRotation.Normal);
-            Communication.sendCommands(this, commands, port, this, mCallback);
+    public static byte[] createQrCodeData(Emulation emulation) {
+        byte[] data;
 
-//            ManagerPrint.SendCommand(this, portName, "", commands);
+        try {
+            data = "Hello World.\n".getBytes("UTF-8");      // Use UTF-8 encoded text data for QR Code.
         }
+        catch (UnsupportedEncodingException e) {
+            data = "Hello World.\n".getBytes();
+        }
+
+        ICommandBuilder builder = StarIoExt.createCommandBuilder(emulation);
+
+        builder.beginDocument();
+
+        builder.append("*Cell:2*\n".getBytes());
+        builder.appendQrCode(data, ICommandBuilder.QrCodeModel.No2, ICommandBuilder.QrCodeLevel.L, 2);
+        builder.appendUnitFeed(32);
+        builder.append("*Cell:8*\n".getBytes());
+        builder.appendQrCode(data, ICommandBuilder.QrCodeModel.No2, ICommandBuilder.QrCodeLevel.L, 8);
+        builder.appendUnitFeed(32);
+
+        builder.append("*Level:L*\n".getBytes());
+        builder.appendQrCode(data, ICommandBuilder.QrCodeModel.No2, ICommandBuilder.QrCodeLevel.L, 4);
+        builder.appendUnitFeed(32);
+        builder.append("*Level:M*\n".getBytes());
+        builder.appendQrCode(data, ICommandBuilder.QrCodeModel.No2, ICommandBuilder.QrCodeLevel.M, 4);
+        builder.appendUnitFeed(32);
+        builder.append("*Level:Q*\n".getBytes());
+        builder.appendQrCode(data, ICommandBuilder.QrCodeModel.No2, ICommandBuilder.QrCodeLevel.Q, 4);
+        builder.appendUnitFeed(32);
+        builder.append("*Level:H*\n".getBytes());
+        builder.appendQrCode(data, ICommandBuilder.QrCodeModel.No2, ICommandBuilder.QrCodeLevel.H, 4);
+        builder.appendUnitFeed(32);
+
+        builder.append("\n*AbsolutePosition:40*\n".getBytes());
+        builder.appendQrCodeWithAbsolutePosition(data, ICommandBuilder.QrCodeModel.No2, ICommandBuilder.QrCodeLevel.L, 4, 40);
+        builder.appendUnitFeed(32);
+
+        builder.append("\n*Alignment:Center*\n".getBytes());
+        builder.appendQrCodeWithAlignment(data, ICommandBuilder.QrCodeModel.No2, ICommandBuilder.QrCodeLevel.L, 4, ICommandBuilder.AlignmentPosition.Center);
+        builder.appendUnitFeed(32);
+        builder.append("\n*Alignment:Right*\n".getBytes());
+        builder.appendQrCodeWithAlignment(data, ICommandBuilder.QrCodeModel.No2, ICommandBuilder.QrCodeLevel.L, 4, ICommandBuilder.AlignmentPosition.Right);
+        builder.appendUnitFeed(32);
+
+        builder.appendCutPaper(ICommandBuilder.CutPaperAction.PartialCutWithFeed);
+
+        builder.endDocument();
+
+        return builder.getCommands();
+    }
+
+    public static byte[] createData(Emulation emulation, int width, Context context) {
+        Bitmap starLogoBitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.qr1);
+
+        ICommandBuilder builder = StarIoExt.createCommandBuilder(emulation);
+
+        builder.beginDocument();
+
+        builder.append("\n*Normal*\n".getBytes());
+        builder.appendBitmap(starLogoBitmap, true);
+
+        builder.append("\n*width:Full, bothScale:true*\n".getBytes());
+        builder.appendBitmap(starLogoBitmap, true, width, true);
+        builder.append("\n*width:Full, bothScale:false*\n".getBytes());
+        builder.appendBitmap(starLogoBitmap, true, width, false);
+
+        builder.append("\n*Rotate180*\n".getBytes());
+        builder.appendBitmap(starLogoBitmap, true, ICommandBuilder.BitmapConverterRotation.Rotate180);
+
+        builder.appendCutPaper(ICommandBuilder.CutPaperAction.PartialCutWithFeed);
+
+        builder.endDocument();
+
+        return builder.getCommands();
     }
 
     @Override
@@ -107,15 +205,13 @@ public class ResultMealActivity extends BaseActivity {
         ModelCart.getInstance().getArrListItem().clear();
         ModelCart.getInstance().getResultMealModel().clear();
         ModelCart.getInstance().getMealModel().clear();
+        ModelCart.getInstance().setPageView(0);
 
-        if (port != null){
-            try{
-                //Port close
-                StarIOPort.releasePort(port);
-                Log.d(LOG, "Printer was close");
-            } catch (StarIOPortException e){
-                e.printStackTrace();
-            }
+        try{
+            //Port close
+            StarIOPort.releasePort(port);
+        }catch (StarIOPortException e) {
+            e.printStackTrace();
         }
     }
 

@@ -18,6 +18,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
+import android.widget.ImageButton;
+import android.widget.Toast;
 
 import com.company.zicure.baseapplication.R;
 import com.company.zicure.baseapplication.activity.MainActivity;
@@ -42,6 +44,7 @@ public abstract class BaseFragment extends Fragment implements View.OnClickListe
     private AnimationItem[] mAnimationItems;
     private AnimationItem mSelectedItem;
     private ButtonView mBtnView, mBtnCancel;
+    private ImageButton btnBack;
     private LabelView labelView;
 
     public BaseFragment() {
@@ -76,21 +79,29 @@ public abstract class BaseFragment extends Fragment implements View.OnClickListe
         mAnimationItems = getAnimationItems();
         mSelectedItem = mAnimationItems[0];
 
+        btnBack = view.findViewById(R.id.btn_back);
+        if (btnBack != null) {
+            btnBack.setOnClickListener(this);
+        }
+
         labelView = view.findViewById(R.id.label_title);
         if (getTypeLayout() == 1) {
-            labelView.setText("เมนูอาหาร");
+            int page = ModelCart.getInstance().getPageView();
+            if (page == 0) {
+                labelView.setText("เพิ่มความหลากหลาย กับสูตรลับ ฉบับญี่ปุ่น");
+            }else{
+                labelView.setText("ความเป็นไปได้ของความหลากหลายจากวัตถุดิบของคุณเอง");
+            }
         }else if (getTypeLayout() == 3){
-            labelView.setText("เริ่มเลือกวัตถุดิบ");
+            labelView.setText("เริ่มเลือกวัตถุดิบที่คุณมี");
         }else if (getTypeLayout() == 2){
-            labelView.setText("เริ่มเลือกเครื่องปรุง");
+            labelView.setText("เพิ่มความหลากหลาย เติมเต็มความอร่อยกับเครื่องปรุงรสจากอายิโนะโมะโต๊ะ");
         }
 
         mRecyclerView = view.findViewById(R.id.recycler_view);
         mBtnView = view.findViewById(R.id.btn_confirm);
-        mBtnCancel = view.findViewById(R.id.btn_cancel);
-        if (mBtnView != null && mBtnCancel != null) {
+        if (mBtnView != null) {
             mBtnView.setOnClickListener(this);
-            mBtnCancel.setOnClickListener(this);
         }
     }
 
@@ -120,26 +131,26 @@ public abstract class BaseFragment extends Fragment implements View.OnClickListe
 
     @Override
     public void onClick(View v) {
-        String name = mBtnView.getText().toString();
-
         if (v.getId() == R.id.btn_confirm) {
-            if (name.equalsIgnoreCase("ถัดไป")) {
+            int pageFragment = ((ShowItemActivity)getActivity()).getPageFragment();
+            if (pageFragment == 0) {
                 if (ModelCart.getInstance().getArrListItem().size() > 0) {
                     FragmentTransaction transaction = getFragmentManager().beginTransaction();
                     transaction.replace(R.id.container_list,  new FragmentShowCondiment(), "Fragment_show_condiment");
                     transaction.commit();
                 }
-
                 mBtnView.setText(R.string.txt_btn_confirm);
+                ((ShowItemActivity) getActivity()).setPageFragment(1);
             }else{
                 queryResultMeal();
             }
-        }else {
-            if (name.equalsIgnoreCase("ถัดไป")){
+        }else if(v.getId() == R.id.btn_back) {
+            if (getTypeLayout() == 3 || getTypeLayout() == 1){
                 getActivity().finish();
             }else{
+                ((ShowItemActivity) getActivity()).setPageFragment(0);
                 FragmentTransaction transaction = getFragmentManager().beginTransaction();
-                transaction.replace(R.id.container_list, new FragmentShowProduct(), "Fragment_show_product");
+                transaction.replace(R.id.container_list, new ChooseIngredientFragment(), "Fragment_show_product");
                 transaction.commit();
             }
         }
@@ -192,7 +203,8 @@ public abstract class BaseFragment extends Fragment implements View.OnClickListe
             }
         }
 
-        ((ShowItemActivity) getActivity()).openActivity(ResultMealActivity.class, true);
+        ModelCart.getInstance().setPageView(1);
+        ((ShowItemActivity) getActivity()).openActivity(ResultMealActivity.class,true);
     }
 
     private MealModel setMealModel(Cursor mCursor, int type){

@@ -1,14 +1,14 @@
 <resources>
-    <string name="app_name">BaseApplication</string>
+    <string name="app_name">Restaurant</string>
     <string name="loading_en">Loading</string>
     <string name="phone_number_en">Phone Number</string>
     <string name="btn_sign_in_en">SIGN IN</string>
     <string name="citizenid_en">CitizenID</string>
     <string name="btn_reload_en">RELOAD</string>
 
-    <string name="title_model">Ingredient</string>
+    <string name="title_model">เริ่มเลือกวัตถุดิบที่คุณมี</string>
 
-    <string name="title_list_item">เลือกวัตถุดิบ</string>
+    <string name="title_list_item">วัตถุดิบที่คุณได้เลือกไว้</string>
     <string name="txt_btn_confirm">ตกลง</string>
     <string name="txt_btn_next">ถัดไป</string>
     <string name="txt_btn_cancel">กลับ</string>

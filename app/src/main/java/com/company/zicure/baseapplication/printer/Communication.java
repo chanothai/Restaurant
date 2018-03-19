@@ -31,6 +31,11 @@ public class Communication {
         SendCommandThread thread = new SendCommandThread(lock, commands, port, context, callback);
         thread.start();
     }
+
+    public static void sendCommands(Object lock, byte[] commands, String portName, String portSettings, int timeout, Context context, SendCallback callback) {
+        SendCommandThread thread = new SendCommandThread(lock, commands, portName, portSettings, timeout, context, callback);
+        thread.start();
+    }
 }
 
 class SendCommandThread extends Thread {

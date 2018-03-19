@@ -21,6 +21,10 @@ public class ShowItemActivity extends BaseActivity {
     //View
     FrameLayout containerItem = null, containerList = null;
 
+    //Properties
+    private int pageFragment = 0;
+    private int viewPattern = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,7 +47,7 @@ public class ShowItemActivity extends BaseActivity {
     }
 
     private void setupView(){
-        int viewPattern = getIntent().getExtras().getInt("view_pattern");
+        viewPattern = getIntent().getExtras().getInt("view_pattern");
         if (viewPattern == 0) {
             callItemMeal();
             containerItem.setVisibility(View.GONE);
@@ -55,6 +59,14 @@ public class ShowItemActivity extends BaseActivity {
             callListItem();
             containerItem.setVisibility(View.VISIBLE);
         }
+    }
+
+    public void setPage(int page){
+        this.viewPattern = page;
+    }
+
+    public int getPage(){
+        return viewPattern;
     }
 
     private void callListItem(){
@@ -87,5 +99,13 @@ public class ShowItemActivity extends BaseActivity {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.container_list, new FragmentShowCondiment(), "Fragment_show_condiment");
         transaction.commit();
+    }
+
+    public int getPageFragment() {
+        return pageFragment;
+    }
+
+    public void setPageFragment(int pageFragment) {
+        this.pageFragment = pageFragment;
     }
 }

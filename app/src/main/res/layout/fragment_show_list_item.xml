@@ -36,25 +36,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="@android:color/white"
-            android:textSize="22sp"
+            android:textSize="28sp"
             android:text="@string/txt_btn_next"
             android:padding="8dp"
             android:gravity="center"
             android:background="@drawable/selector_item"
-            android:layout_above="@+id/btn_cancel"
+            android:layout_alignParentBottom="true"
             android:layout_marginBottom="4dp"/>
-
-        <com.company.zicure.baseapplication.customview.ButtonView
-            android:id="@+id/btn_cancel"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="@android:color/white"
-            android:textSize="22sp"
-            android:text="@string/txt_btn_cancel"
-            android:padding="8dp"
-            android:gravity="center"
-            android:background="@drawable/selector_item"
-            android:layout_alignParentBottom="true"/>
 
     </RelativeLayout>
 

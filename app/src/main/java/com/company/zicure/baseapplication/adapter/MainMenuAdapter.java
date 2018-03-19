@@ -26,7 +26,7 @@ import java.util.List;
 
 public class MainMenuAdapter extends RecyclerView.Adapter<MainMenuAdapter.MainMenuViewHolder> {
 
-    private String[] arrTitle = {"อาหาร", "เครื่องปรุง", "เลือกวัตถุดิบ"};
+    private String[] arrTitle = {"เริ่มเลือกวัตถุดิบ"};
     private Context context = null;
 
     public MainMenuAdapter(Context context) {
@@ -41,39 +41,22 @@ public class MainMenuAdapter extends RecyclerView.Adapter<MainMenuAdapter.MainMe
 
     @Override
     public void onBindViewHolder(MainMenuViewHolder holder, final int position) {
-        switch (position) {
-            case 0:
-                holder.menuImage.setImageResource(R.drawable.bg_menu_meal);
-                holder.menuTitle.setText(arrTitle[0]);
-                break;
-            case 1:
-                holder.menuImage.setImageResource(R.drawable.bg_menu_condiment);
-                holder.menuTitle.setText(arrTitle[1]);
-                break;
-            case 2:
-                holder.menuImage.setImageResource(R.drawable.bg_menu_ingredient);
-                holder.menuTitle.setText(arrTitle[2]);
-                break;
-        }
+        holder.menuImage.setImageResource(R.drawable.bg_menu_ingredient);
+        holder.menuTitle.setText(arrTitle[0]);
 
         holder.layoutTitle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 Bundle bundle;
-                if (position == 0) {
-                    bundle = new Bundle();
-                    bundle.putInt("view_pattern", 0);
-                    ((MainActivity) context).queryMeal();
-                }else if (position == 1) {
-                    bundle = new Bundle();
-                    bundle.putInt("view_pattern", 1);
-                    ((MainActivity) context).queryCondiment();
-                }else{
-                    bundle = new Bundle();
-                    bundle.putInt("view_pattern", 2);
-                    ((MainActivity) context).queryIngredient();
-                }
+
+                bundle = new Bundle();
+                bundle.putInt("view_pattern", 2);
+                ((MainActivity) context).queryIngredient();
+
+                //for all menu
+//                bundle = new Bundle();
+//                bundle.putInt("view_pattern", 0);
+//                ((MainActivity) context).queryMeal();
 
                 ((MainActivity) context).openActivity(ShowItemActivity.class, bundle);
             }

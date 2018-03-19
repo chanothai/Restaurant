@@ -11,12 +11,12 @@
     <ImageView
         android:id="@+id/img_menu"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:scaleType="centerCrop"
         android:layout_alignTop="@+id/layout_title"
         android:layout_alignBottom="@+id/layout_title"
         android:contentDescription="@string/title_model"
-        app:srcCompat="@drawable/bg_menu_meal" />
+        app:srcCompat="@drawable/bg_menu_ingredient" />
 
     <RelativeLayout
         android:id="@+id/layout_title"
@@ -30,7 +30,7 @@
         <com.company.zicure.baseapplication.customview.LabelView
             android:id="@+id/title_menu"
             android:layout_width="match_parent"
-            android:layout_height="240dp"
+            android:layout_height="match_parent"
             android:textColor="@android:color/white"
             android:textStyle="bold"
             android:textSize="48sp"

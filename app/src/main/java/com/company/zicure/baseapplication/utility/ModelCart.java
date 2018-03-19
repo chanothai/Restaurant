@@ -21,6 +21,8 @@ public class ModelCart {
 
     private ArrayList<MealModel> arrListItem = null;
 
+    private int pageView = 0;
+
     public ModelCart() {
         mealModel = new ArrayList<>();
         condimentModel = new ArrayList<>();
@@ -80,5 +82,13 @@ public class ModelCart {
 
     public void setScanMealModel(ArrayList<IngredientModel> scanMealModel) {
         this.scanMealModel = scanMealModel;
+    }
+
+    public int getPageView() {
+        return pageView;
+    }
+
+    public void setPageView(int pageView) {
+        this.pageView = pageView;
     }
 }
