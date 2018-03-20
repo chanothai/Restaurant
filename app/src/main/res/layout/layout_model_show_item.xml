@@ -33,7 +33,7 @@
             android:textSize="@dimen/size_text_medium"
             android:padding="8dp"
             android:layout_weight="1"
-            android:gravity="bottom|center"/>
+            android:gravity="center"/>
     </LinearLayout>
 
 </android.support.v7.widget.CardView>

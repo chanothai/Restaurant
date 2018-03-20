@@ -7,6 +7,7 @@ import android.graphics.drawable.Drawable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -26,8 +27,6 @@ import com.company.zicure.baseapplication.customview.LabelView;
 import com.company.zicure.baseapplication.fragment.ListItemFragment;
 import com.company.zicure.baseapplication.models.MealModel;
 import com.company.zicure.baseapplication.utility.ModelCart;
-import com.google.gson.Gson;
-import com.starmicronics.stario.StarIOPortException;
 
 import java.util.ArrayList;
 
@@ -53,7 +52,9 @@ public class ShowItemAdapter extends RecyclerView.Adapter<ShowItemAdapter.ShowIt
 
     @Override
     public void onBindViewHolder(final ShowItemViewHolder holder, final int position) {
-        holder.itemName.setText(getArrModel().get(position).getName());
+        String nameItem = getArrModel().get(position).getName();
+        Log.d("Data_Query", nameItem);
+        holder.itemName.setText(nameItem);
 
         setVisibleImage(holder, position);
 
