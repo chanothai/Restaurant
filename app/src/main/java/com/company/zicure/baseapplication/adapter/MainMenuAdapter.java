@@ -41,7 +41,6 @@ public class MainMenuAdapter extends RecyclerView.Adapter<MainMenuAdapter.MainMe
 
     @Override
     public void onBindViewHolder(MainMenuViewHolder holder, final int position) {
-        holder.menuImage.setImageResource(R.drawable.bg_menu_ingredient);
         holder.menuTitle.setText(arrTitle[0]);
 
         holder.layoutTitle.setOnClickListener(new View.OnClickListener() {

@@ -102,6 +102,6 @@ public class EnglishReceiptsImpl extends ILocalizeReceipts {
 
     @Override
     public Bitmap createCouponImage(Resources resources) {
-        return BitmapFactory.decodeResource(resources, R.drawable.qr1);
+        return BitmapFactory.decodeResource(resources, R.drawable.food1);
     }
 }

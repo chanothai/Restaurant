@@ -20,7 +20,7 @@
             android:text="@string/title_list_item"
             android:padding="8dp"
             android:textColor="@android:color/black"
-            android:textSize="28sp"/>
+            android:textSize="@dimen/size_text_medium"/>
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recycler_view"

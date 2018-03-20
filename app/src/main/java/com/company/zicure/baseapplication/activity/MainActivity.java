@@ -80,7 +80,7 @@ public class MainActivity extends BaseActivity {
                 bundle.putInt("view_pattern", 0);
                 queryMeal();
 
-                openActivity(ShowItemActivity.class, bundle);
+                openActivity(ResultMealActivity.class, bundle);
             }
         });
     }

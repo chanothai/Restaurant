@@ -56,6 +56,17 @@ public class ShowItemAdapter extends RecyclerView.Adapter<ShowItemAdapter.ShowIt
         holder.itemName.setText(getArrModel().get(position).getName());
 
         setVisibleImage(holder, position);
+
+        if (typeLayout == 3){
+            if (ModelCart.getInstance().getArrListItem().size() == 0) {
+                getArrModel().get(position).setActive(false);
+            }
+        }else if (typeLayout == 2) {
+            if (ModelCart.getInstance().getSumCondiment().size() == 0) {
+                getArrModel().get(position).setActive(false);
+            }
+        }
+
         if (typeLayout == 1) {
             holder.linearLayout.setBackground(context.getDrawable(R.drawable.select_meal_item));
             holder.linearLayout.setOnClickListener(new View.OnClickListener() {
@@ -71,20 +82,16 @@ public class ShowItemAdapter extends RecyclerView.Adapter<ShowItemAdapter.ShowIt
                     }
                 }
             });
-        }
-        else if (typeLayout == 2){
-            setSelectActive(holder, position);
-
-        }else if (typeLayout == 3) {
+        } else if (typeLayout == 3 || typeLayout == 2) { // Show Ingredient, Show Condiment
             holder.itemName.setGravity(Gravity.CENTER);
-            holder.itemName.setTextColor(Color.WHITE);
+            holder.itemName.setTextColor(Color.BLACK);
 
             setSelectActive(holder, position);
-        }else if (typeLayout == 4){
+        }else if (typeLayout == 4){ // List Item
             int rang = position + 1;
             String data = rang + ". " + ModelCart.getInstance().getArrListItem().get(position).getName();
             holder.itemName.setText(data);
-            holder.itemName.setTextSize(TypedValue.COMPLEX_UNIT_SP, 22);
+            holder.itemName.setTextSize(TypedValue.COMPLEX_UNIT_SP, 28);
             holder.itemIMG.setVisibility(View.GONE);
             holder.itemName.setGravity(Gravity.START|Gravity.BOTTOM);
 
@@ -104,11 +111,11 @@ public class ShowItemAdapter extends RecyclerView.Adapter<ShowItemAdapter.ShowIt
         }
     }
 
-    private void createDialogPrint(String name, int qrcode){
+    private void createDialogPrint(String name, final int qrcode){
         final Dialog dialog = new Dialog(context);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.layout_dialog_custom);
-        dialog.setCancelable(false);
+        dialog.setCancelable(true);
 
         LabelView itemName = dialog.findViewById(R.id.name_item);
         itemName.setText("ชื่อ: " +name);
@@ -120,9 +127,7 @@ public class ShowItemAdapter extends RecyclerView.Adapter<ShowItemAdapter.ShowIt
         btnPrint.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (ModelCart.getInstance().getPageView() == 1) {
-                    ((ResultMealActivity)context).startPrint();
-                }
+                ((ResultMealActivity)context).startPrint(qrcode);
                 dialog.dismiss();
             }
         });
@@ -133,29 +138,16 @@ public class ShowItemAdapter extends RecyclerView.Adapter<ShowItemAdapter.ShowIt
     private void setSelectActive(final ShowItemViewHolder holder, final int position) {
         if (getArrModel().get(position).isActive()) {
             holder.itemName.setTextColor(Color.WHITE);
-            holder.linearLayout.setBackground(context.getDrawable(R.drawable.btn_select_item_press));
+            holder.linearLayout.setBackgroundColor(Color.parseColor("#caff4444"));
         }else {
-            if (typeLayout == 2){
-                holder.itemName.setTextColor(Color.BLACK);
-                holder.linearLayout.setBackgroundColor(Color.WHITE);
-            }else{
-                holder.linearLayout.setBackground(context.getDrawable(R.drawable.btn_select_item));
-            }
+            holder.itemName.setTextColor(Color.BLACK);
+            holder.linearLayout.setBackgroundColor(Color.WHITE);
         }
 
         holder.linearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (getArrModel().get(position).isActive()) {
-                    if (typeLayout == 2) {
-                        holder.itemName.setTextColor(Color.BLACK);
-                        holder.linearLayout.setBackgroundColor(Color.WHITE);
-                    }else{
-                        holder.linearLayout.setBackground(context.getDrawable(R.drawable.btn_select_item));
-                    }
-
-                    getArrModel().get(position).setActive(false);
-
                     if (ModelCart.getInstance().getArrListItem().size() > 0){
                         for (int i = 0; i < ModelCart.getInstance().getArrListItem().size(); i++){
                             if (ModelCart.getInstance().getArrListItem().get(i).getName().equalsIgnoreCase(getArrModel().get(position).getName())) {
@@ -163,18 +155,40 @@ public class ShowItemAdapter extends RecyclerView.Adapter<ShowItemAdapter.ShowIt
                             }
                         }
                     }
-                }else{
-                    if (typeLayout == 2){
-                        holder.itemName.setTextColor(Color.WHITE);
+
+                    if (typeLayout == 2) { // clear choose 1 item
+                        if (ModelCart.getInstance().getSumCondiment().size() > 0) {
+                            ModelCart.getInstance().getSumCondiment().clear();
+                            holder.itemName.setTextColor(Color.BLACK);
+                            holder.linearLayout.setBackgroundColor(Color.WHITE);
+                            getArrModel().get(position).setActive(false);
+                        }
+                    }else{
+                        holder.itemName.setTextColor(Color.BLACK);
+                        holder.linearLayout.setBackgroundColor(Color.WHITE);
+                        getArrModel().get(position).setActive(false);
                     }
+                }else{
 
                     MealModel mealModel = new MealModel();
                     mealModel.setName(getArrModel().get(position).getName());
                     mealModel.setFoodID(getArrModel().get(position).getFoodID());
 
-                    getArrModel().get(position).setActive(true);
-                    holder.linearLayout.setBackground(context.getDrawable(R.drawable.btn_select_item_press));
-                    ModelCart.getInstance().getArrListItem().add(mealModel);
+                    if (typeLayout == 2){
+                        if (ModelCart.getInstance().getSumCondiment().size() == 0) {
+                            ModelCart.getInstance().getSumCondiment().add(mealModel);
+                            ModelCart.getInstance().getArrListItem().add(mealModel);
+
+                            holder.itemName.setTextColor(Color.WHITE);
+                            holder.linearLayout.setBackgroundColor(Color.parseColor("#caff4444"));
+                            getArrModel().get(position).setActive(true);
+                        }
+                    }else{
+                        getArrModel().get(position).setActive(true);
+                        holder.itemName.setTextColor(Color.WHITE);
+                        holder.linearLayout.setBackgroundColor(Color.parseColor("#caff4444"));
+                        ModelCart.getInstance().getArrListItem().add(mealModel);
+                    }
                 }
 
                 ((ShowItemActivity) context).updateListItem();

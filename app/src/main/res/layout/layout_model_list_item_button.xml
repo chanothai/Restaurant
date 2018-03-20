@@ -8,5 +8,6 @@
         android:id="@+id/btn_confirm"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textSize="@dimen/size_text_medium"
         android:text="@string/title_list_item"/>
 </RelativeLayout>

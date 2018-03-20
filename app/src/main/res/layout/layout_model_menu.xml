@@ -15,8 +15,7 @@
         android:scaleType="centerCrop"
         android:layout_alignTop="@+id/layout_title"
         android:layout_alignBottom="@+id/layout_title"
-        android:contentDescription="@string/title_model"
-        app:srcCompat="@drawable/bg_menu_ingredient" />
+        android:contentDescription="@string/title_model" />
 
     <RelativeLayout
         android:id="@+id/layout_title"
@@ -25,7 +24,7 @@
         android:clickable="true"
         android:focusable="true"
         android:background="@drawable/selector_item"
-        android:alpha="0.7">
+        android:alpha="0.8">
 
         <com.company.zicure.baseapplication.customview.LabelView
             android:id="@+id/title_menu"
@@ -33,7 +32,7 @@
             android:layout_height="match_parent"
             android:textColor="@android:color/white"
             android:textStyle="bold"
-            android:textSize="48sp"
+            android:textSize="@dimen/size_text_large"
             android:layout_gravity="center"
             android:gravity="center"
             android:text="@string/title_model"/>

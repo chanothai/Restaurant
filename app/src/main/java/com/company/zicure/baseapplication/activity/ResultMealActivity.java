@@ -66,11 +66,21 @@ public class ResultMealActivity extends BaseActivity {
         BlurImageView blurImageView = findViewById(R.id.bg_image_food);
         blurImageView.setBlur(3);
 
-        if (ModelCart.getInstance().getArrListItem().size() > 1) {
-            scanData();
+        int viewPattern = getIntent().getExtras().getInt("view_pattern");
+        if (viewPattern == 0) {
+            callItemMeal();
+        }else {
+            if (ModelCart.getInstance().getArrListItem().size() > 1) {
+                scanData();
+            }
+            callResultItem();
         }
+    }
 
-        callResultItem();
+    public void callItemMeal(){
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.container, new FragmentShowProduct(), "Fragment_show_product");
+        transaction.commit();
     }
 
     private void connectPrinter(){
@@ -85,115 +95,31 @@ public class ResultMealActivity extends BaseActivity {
         }
     }
 
-    public void startPrint() {
-//        try{
+    public void startPrint(int imgPrint) {
             if (port != null) {
                 byte[] commands;
-//                ILocalizeReceipts localizeReceipts = ILocalizeReceipts.createLocalizeReceipts(0, 832);
-//                commands = PrinterFunctions.createCouponData(emulation, localizeReceipts, getResources(), 832, ICommandBuilder.BitmapConverterRotation.Normal);
-//                Communication.sendCommands(this, commands, port, this, mCallback);
-                commands = createData(Emulation.StarGraphic, 832, this);
+                //384
+                commands = createData(Emulation.StarGraphic, 576, this, imgPrint);
                 Communication.sendCommands(this, commands, port.getPortName(), port.getPortSettings(), 10000, this, mCallback);
 
-//                StarPrinterStatus statusPrint = port.beginCheckedBlock();
-//
-//                if (statusPrint.offline) {
-//                    throw new StarIOPortException("A printer is offline.");
-//                }
-//                commands = createData(emulation, 832, this);
-//
-//
-//                port.writePort(commands, 0, commands.length);
-//
-//                port.setEndCheckedBlockTimeoutMillis(30000);
-//
-//                statusPrint = port.endCheckedBlock();
-//
-//                if (statusPrint.coverOpen) {
-//                    throw new StarIOPortException("Printer cover is open");
-//                } else if (statusPrint.receiptPaperEmpty) {
-//                    throw new StarIOPortException("Receipt paper is empty");
-//                } else if (statusPrint.offline) {
-//                    throw new StarIOPortException("Printer is offline");
-//                }
             }
-//        }catch (StarIOPortException e){
-//            e.printStackTrace();
-//        }
     }
 
-    public static byte[] createQrCodeData(Emulation emulation) {
-        byte[] data;
-
-        try {
-            data = "Hello World.\n".getBytes("UTF-8");      // Use UTF-8 encoded text data for QR Code.
-        }
-        catch (UnsupportedEncodingException e) {
-            data = "Hello World.\n".getBytes();
-        }
+    public static byte[] createData(Emulation emulation, int width, Context context, int imgPrint) {
+        Bitmap starLogoBitmap = BitmapFactory.decodeResource(context.getResources(), imgPrint);
 
         ICommandBuilder builder = StarIoExt.createCommandBuilder(emulation);
 
         builder.beginDocument();
 
-        builder.append("*Cell:2*\n".getBytes());
-        builder.appendQrCode(data, ICommandBuilder.QrCodeModel.No2, ICommandBuilder.QrCodeLevel.L, 2);
-        builder.appendUnitFeed(32);
-        builder.append("*Cell:8*\n".getBytes());
-        builder.appendQrCode(data, ICommandBuilder.QrCodeModel.No2, ICommandBuilder.QrCodeLevel.L, 8);
-        builder.appendUnitFeed(32);
-
-        builder.append("*Level:L*\n".getBytes());
-        builder.appendQrCode(data, ICommandBuilder.QrCodeModel.No2, ICommandBuilder.QrCodeLevel.L, 4);
-        builder.appendUnitFeed(32);
-        builder.append("*Level:M*\n".getBytes());
-        builder.appendQrCode(data, ICommandBuilder.QrCodeModel.No2, ICommandBuilder.QrCodeLevel.M, 4);
-        builder.appendUnitFeed(32);
-        builder.append("*Level:Q*\n".getBytes());
-        builder.appendQrCode(data, ICommandBuilder.QrCodeModel.No2, ICommandBuilder.QrCodeLevel.Q, 4);
-        builder.appendUnitFeed(32);
-        builder.append("*Level:H*\n".getBytes());
-        builder.appendQrCode(data, ICommandBuilder.QrCodeModel.No2, ICommandBuilder.QrCodeLevel.H, 4);
-        builder.appendUnitFeed(32);
-
-        builder.append("\n*AbsolutePosition:40*\n".getBytes());
-        builder.appendQrCodeWithAbsolutePosition(data, ICommandBuilder.QrCodeModel.No2, ICommandBuilder.QrCodeLevel.L, 4, 40);
-        builder.appendUnitFeed(32);
-
-        builder.append("\n*Alignment:Center*\n".getBytes());
-        builder.appendQrCodeWithAlignment(data, ICommandBuilder.QrCodeModel.No2, ICommandBuilder.QrCodeLevel.L, 4, ICommandBuilder.AlignmentPosition.Center);
-        builder.appendUnitFeed(32);
-        builder.append("\n*Alignment:Right*\n".getBytes());
-        builder.appendQrCodeWithAlignment(data, ICommandBuilder.QrCodeModel.No2, ICommandBuilder.QrCodeLevel.L, 4, ICommandBuilder.AlignmentPosition.Right);
-        builder.appendUnitFeed(32);
-
-        builder.appendCutPaper(ICommandBuilder.CutPaperAction.PartialCutWithFeed);
-
-        builder.endDocument();
-
-        return builder.getCommands();
-    }
-
-    public static byte[] createData(Emulation emulation, int width, Context context) {
-        Bitmap starLogoBitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.qr1);
-
-        ICommandBuilder builder = StarIoExt.createCommandBuilder(emulation);
-
-        builder.beginDocument();
-
-        builder.append("\n*Normal*\n".getBytes());
-        builder.appendBitmap(starLogoBitmap, true);
+        byte[] data = "Hello World.\n".getBytes();
+        builder.append(data);
+        builder.appendFontStyle(ICommandBuilder.FontStyleType.B);
 
         builder.append("\n*width:Full, bothScale:true*\n".getBytes());
-        builder.appendBitmap(starLogoBitmap, true, width, true);
-        builder.append("\n*width:Full, bothScale:false*\n".getBytes());
-        builder.appendBitmap(starLogoBitmap, true, width, false);
-
-        builder.append("\n*Rotate180*\n".getBytes());
-        builder.appendBitmap(starLogoBitmap, true, ICommandBuilder.BitmapConverterRotation.Rotate180);
+        builder.appendBitmapWithAbsolutePosition(starLogoBitmap,true, width, true, ICommandBuilder.BitmapConverterRotation.Normal,  1);
 
         builder.appendCutPaper(ICommandBuilder.CutPaperAction.PartialCutWithFeed);
-
         builder.endDocument();
 
         return builder.getCommands();
@@ -206,6 +132,7 @@ public class ResultMealActivity extends BaseActivity {
         ModelCart.getInstance().getResultMealModel().clear();
         ModelCart.getInstance().getMealModel().clear();
         ModelCart.getInstance().setPageView(0);
+        ModelCart.getInstance().getSumCondiment().clear();
 
         try{
             //Port close

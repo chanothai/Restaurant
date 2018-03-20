@@ -138,9 +138,10 @@ public abstract class BaseFragment extends Fragment implements View.OnClickListe
                     FragmentTransaction transaction = getFragmentManager().beginTransaction();
                     transaction.replace(R.id.container_list,  new FragmentShowCondiment(), "Fragment_show_condiment");
                     transaction.commit();
+
+                    mBtnView.setText(R.string.txt_btn_confirm);
+                    ((ShowItemActivity) getActivity()).setPageFragment(1);
                 }
-                mBtnView.setText(R.string.txt_btn_confirm);
-                ((ShowItemActivity) getActivity()).setPageFragment(1);
             }else{
                 queryResultMeal();
             }
@@ -204,7 +205,9 @@ public abstract class BaseFragment extends Fragment implements View.OnClickListe
         }
 
         ModelCart.getInstance().setPageView(1);
-        ((ShowItemActivity) getActivity()).openActivity(ResultMealActivity.class,true);
+        Bundle bundle = new Bundle();
+        bundle.putInt("view_pattern", 2);
+        ((ShowItemActivity) getActivity()).openActivity(ResultMealActivity.class,bundle,true);
     }
 
     private MealModel setMealModel(Cursor mCursor, int type){

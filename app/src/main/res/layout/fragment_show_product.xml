@@ -31,7 +31,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="8dp"
-                android:textSize="28sp"
+                android:textSize="@dimen/size_text_large"
                 android:text="@string/title_list_item"
                 android:layout_toEndOf="@+id/btn_back"
                 android:textStyle="bold"

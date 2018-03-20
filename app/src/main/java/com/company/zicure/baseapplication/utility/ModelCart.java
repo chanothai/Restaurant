@@ -17,6 +17,8 @@ public class ModelCart {
     private ArrayList<MealModel> ingredientModel = null;
     private ArrayList<MealModel> resultMealModel = null;
 
+    private ArrayList<MealModel> sumCondiment = null;
+
     private ArrayList<IngredientModel> scanMealModel = null;
 
     private ArrayList<MealModel> arrListItem = null;
@@ -31,6 +33,7 @@ public class ModelCart {
         resultMealModel = new ArrayList<>();
 
         scanMealModel = new ArrayList<>();
+        sumCondiment = new ArrayList<>();
     }
 
     public static ModelCart getInstance() {
@@ -90,5 +93,13 @@ public class ModelCart {
 
     public void setPageView(int pageView) {
         this.pageView = pageView;
+    }
+
+    public ArrayList<MealModel> getSumCondiment() {
+        return sumCondiment;
+    }
+
+    public void setSumCondiment(ArrayList<MealModel> sumCondiment) {
+        this.sumCondiment = sumCondiment;
     }
 }
